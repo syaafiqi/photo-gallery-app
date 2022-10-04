@@ -12,6 +12,7 @@ import id.syaafiqi.photo_gallery_app.R
 import id.syaafiqi.photo_gallery_app.databinding.ActivityViewBinding
 import id.syaafiqi.photo_gallery_app.extensions.getExtra
 import id.syaafiqi.photo_gallery_app.utils.Constants
+import id.syaafiqi.photo_gallery_app.utils.Utility
 
 class ViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityViewBinding
@@ -57,14 +58,8 @@ class ViewActivity : AppCompatActivity() {
                 }
             })
 
-        val loaderPlaceholder = CircularProgressDrawable(this)
-        with(loaderPlaceholder) {
-            strokeWidth = 10f
-            centerRadius = 50f
-            start()
-        }
         Glide.with(this).load(getExtra<String>(Constants.PHOTO_URL))
-            .placeholder(loaderPlaceholder)
+            .placeholder(Utility.createLoaderPlaceholder(this))
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(binding.ivPhotoView)
     }
 }
