@@ -11,7 +11,9 @@ import id.syaafiqi.photo_gallery_app.databinding.ItemPhotoBinding
 import id.syaafiqi.photo_gallery_app.extensions.show
 
 class HomeAdapter(
-    private var photosList: ArrayList<PhotosModel>
+    private var photosList: ArrayList<PhotosModel>,
+
+    private val listener: ViewAction
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var isLoading = true
@@ -30,10 +32,13 @@ class HomeAdapter(
         RecyclerView.ViewHolder(view.root) {
         fun bind(data: PhotosModel) {
             with(view) {
-                Glide.with(root.context).load(data.imageLink)
+                Glide.with(root.context).load(data.imageThumbnail)
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(view.ivPhotoThumbnail)
                 tvPhotoDescription.text = data.imageDescription
                 tvUserName.text = data.userName
+                view.root.setOnClickListener {
+                    listener.itemClick(data)
+                }
             }
 
         }
@@ -70,5 +75,9 @@ class HomeAdapter(
         isLoading = !isLastPage
         photosList.addAll(addedItems)
         notifyDataSetChanged()
+    }
+
+    interface ViewAction {
+        fun itemClick(data: PhotosModel)
     }
 }

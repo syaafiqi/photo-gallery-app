@@ -22,7 +22,8 @@ class HomePresenter(
                 view.onLoadSuccess(entity.map { item ->
                     PhotosModel(
                         id = item.id,
-                        imageLink = item.urls.thumb,
+                        imageThumbnail = item.urls.thumb,
+                        imageFullSize = item.urls.full,
                         imageDescription = item.description,
                         userName = item.user.name
                     )
@@ -53,7 +54,8 @@ class HomePresenter(
                 view.onFetchSuccess(entity.map { item ->
                     PhotosModel(
                         id = item.id,
-                        imageLink = item.urls.thumb,
+                        imageThumbnail = item.urls.thumb,
+                        imageFullSize = item.urls.full,
                         imageDescription = item.description,
                         userName = item.user.name
                     )

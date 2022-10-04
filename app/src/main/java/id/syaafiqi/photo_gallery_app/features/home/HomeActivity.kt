@@ -1,7 +1,6 @@
 package id.syaafiqi.photo_gallery_app.features.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -12,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import id.syaafiqi.photo_gallery_app.R
 import id.syaafiqi.photo_gallery_app.core.data.PagedRequest
 import id.syaafiqi.photo_gallery_app.databinding.ActivityHomeBinding
+import id.syaafiqi.photo_gallery_app.extensions.gotoActivity
 import id.syaafiqi.photo_gallery_app.extensions.hide
 import id.syaafiqi.photo_gallery_app.extensions.show
-import io.reactivex.plugins.RxJavaPlugins
+import id.syaafiqi.photo_gallery_app.features.view.ViewActivity
+import id.syaafiqi.photo_gallery_app.utils.Constants
 
 
 class HomeActivity : AppCompatActivity() {
@@ -152,7 +153,7 @@ class HomeActivity : AppCompatActivity() {
             when (models.size) {
                 0 -> binding.emptyState.root.show()
                 else -> {
-                    adapter = HomeAdapter(ArrayList(models))
+                    adapter = HomeAdapter(ArrayList(models), RecyclerViewActionObserver())
                     binding.rvPhotos.adapter = adapter
                     when (binding.rvPhotos.layoutManager) {
                         is GridLayoutManager -> setGridRecyclerView()
@@ -185,6 +186,12 @@ class HomeActivity : AppCompatActivity() {
                 }
                 root.show()
             }
+        }
+    }
+
+    inner class RecyclerViewActionObserver: HomeAdapter.ViewAction {
+        override fun itemClick(data: PhotosModel) {
+            gotoActivity(ViewActivity::class, extras = mapOf(Constants.PHOTO_URL to data.imageFullSize))
         }
     }
 
